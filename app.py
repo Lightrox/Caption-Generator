@@ -1,95 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generated Caption & Hashtags</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap');
+from flask import Flask, render_template, request
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
-        body {
-            font-family: 'Orbitron', sans-serif;
-            text-align: center;
-            margin: 50px;
-            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-            color: white;
-        }
-        .container {
-            display: inline-block;
-            background: rgba(10, 10, 10, 0.9);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        textarea {
-            width: 600px;
-            height: 150px;
-            padding: 12px;
-            resize: none;
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(138, 43, 226, 0.5);
-            color: white;
-            font-size: 18px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        button {
-            background: linear-gradient(145deg, #a855f7, #6a0dad);
-            color: white;
-            border: none;
-            padding: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s ease-in-out;
-            box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.6);
-            border-radius: 6px;
-            margin: 10px;
-        }
-        button:hover {
-            background: linear-gradient(145deg, #6a0dad, #a855f7);
-            transform: scale(1.08);
-        }
-        .line {
-            width: 90%;
-            height: 2px;
-            background: rgba(138, 43, 226, 0.4);
-            margin: 20px auto;
-        }
-    </style>
-</head>
-<body>
+# Load API Key
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-    <h1>✨ Your AI-Generated Caption & Hashtags</h1>
+app = Flask(__name__)
+
+def generate_caption(topic, style):
+    styles = {
+        "casual": "Make it simple and conversational.",
+        "funny": "Make it witty and humorous.",
+        "motivational": "Make it inspiring and uplifting.",
+        "aesthetic": "Make it poetic and deep.",
+        "short": "Make it short, catchy, and trendy."
+    }
+
+    prompt = f"Generate an Instagram caption about {topic}. {styles.get(style, 'Make it engaging.')}"
+
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(prompt)
+
+    return response.text if response else "Failed to generate caption."
+
+def generate_hashtags(topic):
+    prompt = f"Generate a list of 10 trending hashtags for {topic} on Instagram."
+
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(prompt)
+
+    return response.text if response else "#NoHashtagsGenerated"
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        topic = request.form.get("topic")
+        style = request.form.get("style")
+
+        if not topic or not style:
+            return render_template("index.html", error="Please fill all fields.")
+
+        caption = generate_caption(topic, style)
+        hashtags = generate_hashtags(topic)
+
+        return render_template("caption.html", topic=topic, style=style, caption=caption, hashtags=hashtags)
     
-    <div class="container">
-        <h3>📝 Caption</h3>
-        <textarea id="captionText" readonly>{{ caption }}</textarea>
-        <button onclick="copyText('captionText')">📋 Copy Caption</button>
+    return render_template("index.html")
 
-        <div class="line"></div>
+@app.route("/back")
+def back():
+    return render_template("index.html")
 
-        <h3>🔖 Hashtags</h3>
-        <textarea id="hashtagText" readonly>{{ hashtags }}</textarea>
-        <button onclick="copyText('hashtagText')">📋 Copy Hashtags</button>
-
-        <div class="line"></div>
-
-        <button onclick="goBack()">🔙 Back</button>
-    </div>
-
-    <script>
-        function copyText(elementId) {
-            var textArea = document.getElementById(elementId);
-            textArea.select();
-            document.execCommand("copy");
-            alert("Copied to clipboard! 📋");
-        }
-
-        function goBack() {
-            window.location.href = "/";
-        }
-    </script>
-
-</body>
-</html>
+if __name__ == "__main__":
+    app.run(debug=True)
