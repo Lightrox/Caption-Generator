@@ -5,51 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Caption & Hashtag Generator</title>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            background: black;
-            color: white;
-            margin: 50px;
-            overflow: hidden;
-        }
-        
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle, rgba(20,20,20,0.9), black);
-        }
-        
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-    
-        .particle {
-            position: absolute;
-            background: rgba(138, 43, 226, 0.8); /* Violet glow */
-            border-radius: 50%;
-            width: 5px;
-            height: 5px;
-            animation: floatParticles 10s infinite ease-in-out;
-        }
-    
-        @keyframes floatParticles {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            50% { transform: translateY(-200px) scale(1.5); opacity: 0.5; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
             color: white;
-            margin: 50px;
+            background: black;
+            margin: 0;
+            padding: 20px;
             overflow: hidden;
             background: linear-gradient(-45deg, #8a2be2, #5a189a, #0a0a0a, #1a1a1a);
             background-size: 400% 400%;
@@ -67,39 +37,47 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 80vh;
+            min-height: 80vh;
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
         }
 
         .form-box {
             background: rgba(20, 20, 20, 0.9);
-            padding: 30px;
+            padding: 25px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-            width: 400px;
+            width: 90%;
+            max-width: 400px;
             text-align: left;
         }
 
         label {
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
             margin-bottom: 5px;
+            display: block;
         }
 
         input, select, button {
-            display: block;
-            width: calc(100% - 20px); /* Same width for input and select */
+            width: 100%;
             padding: 12px;
             margin: 10px 0;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 1rem;
             border: 1px solid violet;
             background: #1a1a1a;
             color: white;
+            outline: none;
         }
 
         button {
             background: linear-gradient(135deg, #8a2be2, #5a189a);
-            color: white;
             border: none;
             cursor: pointer;
             font-weight: bold;
@@ -110,6 +88,55 @@
         button:hover {
             box-shadow: 0 0 20px rgba(138, 43, 226, 1);
         }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-box {
+                padding: 20px;
+                width: 95%;
+            }
+
+            input, select, button {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
+
+        /* Particle Animation */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(20,20,20,0.9), black);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(138, 43, 226, 0.8);
+            border-radius: 50%;
+            width: 4px;
+            height: 4px;
+            animation: floatParticles 8s infinite ease-in-out;
+        }
+
+        @keyframes floatParticles {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-150px) scale(1.5); opacity: 0.5; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -118,7 +145,7 @@
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     const particleContainer = document.querySelector(".particles");
-                    for (let i = 0; i < 50; i++) {
+                    for (let i = 0; i < 30; i++) {
                         let particle = document.createElement("div");
                         particle.classList.add("particle");
                         particle.style.top = Math.random() * 100 + "vh";
@@ -130,7 +157,7 @@
             </script>
         </div>
     </div>
-    
+
     <div class="container">
         <h1>🚀 AI-Powered Caption & Hashtag Generator</h1>
         
