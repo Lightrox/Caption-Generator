@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Caption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #121212;
+            color: white;
+        }
+        .result {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(138, 43, 226, 0.5);
+            display: inline-block;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            resize: none;
+            background: #2a2a2a;
+            border: 1px solid #8a2be2;
+            color: white;
+        }
+        button {
+            background: linear-gradient(145deg, #a855f7, #6a0dad);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.6);
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background: linear-gradient(145deg, #6a0dad, #a855f7);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>✨ Your AI-Generated Caption</h1>
+    
+    <div class="result">
+        <textarea id="captionText" rows="3" readonly>{{ caption }}</textarea>
+        
+        <button onclick="copyCaption()">📋 Copy Caption</button>
+        <button onclick="goBack()">🔙 Back</button>
+    </div>
+
+    <script>
+        function copyCaption() {
+            var captionText = document.getElementById("captionText");
+            captionText.select();
+            document.execCommand("copy");
+            alert("Caption copied to clipboard! 📋");
+        }
+
+        function goBack() {
+            window.location.href = "/";
+        }
+    </script>
+
+</body>
+</html>
