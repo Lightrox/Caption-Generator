@@ -26,7 +26,7 @@ def generate_caption(topic, style):
     return response.text if response else "Failed to generate caption."
 
 def generate_hashtags(topic):
-    prompt = f"Generate a list of 10 trending hashtags for {topic} on Instagram."
+    prompt = f"Generate a list of 20 trending hashtags for {topic} on Instagram."
 
     model = genai.GenerativeModel("gemini-pro")
     response = model.generate_content(prompt)
