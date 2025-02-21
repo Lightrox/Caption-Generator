@@ -3,77 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Caption Generator</title>
+    <title>AI Caption & Hashtag Generator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
+            background: black;
+            color: white;
             margin: 50px;
-            background-color: #121212;
-            color: white;
+            overflow: hidden;
         }
-        form {
-            display: inline-block;
-            text-align: left;
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(138, 43, 226, 0.5);
-        }
-        label, select, input, button {
-            display: block;
-            margin: 10px 0;
+        
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 10px;
-            border-radius: 5px;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(20,20,20,0.9), black);
         }
-        input, select {
-            background: #2a2a2a;
-            border: 1px solid #8a2be2;
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    
+        .particle {
+            position: absolute;
+            background: rgba(138, 43, 226, 0.8); /* Violet glow */
+            border-radius: 50%;
+            width: 5px;
+            height: 5px;
+            animation: floatParticles 10s infinite ease-in-out;
+        }
+    
+        @keyframes floatParticles {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateY(-200px) scale(1.5); opacity: 0.5; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            color: white;
+            margin: 50px;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #8a2be2, #5a189a, #0a0a0a, #1a1a1a);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+        }
+
+        .form-box {
+            background: rgba(20, 20, 20, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+            width: 400px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input, select, button {
+            display: block;
+            width: calc(100% - 20px); /* Same width for input and select */
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            border: 1px solid violet;
+            background: #1a1a1a;
             color: white;
         }
+
         button {
-            background: linear-gradient(145deg, #a855f7, #6a0dad);
+            background: linear-gradient(135deg, #8a2be2, #5a189a);
             color: white;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0px 4px 10px rgba(138, 43, 226, 0.6);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.8);
+            transition: 0.3s ease;
         }
+
         button:hover {
-            background: linear-gradient(145deg, #6a0dad, #a855f7);
-            transform: scale(1.05);
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 1);
         }
     </style>
 </head>
 <body>
-
-    <h1>🚀 AI-Powered Caption Generator</h1>
+    <div class="background">
+        <div class="particles">
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const particleContainer = document.querySelector(".particles");
+                    for (let i = 0; i < 50; i++) {
+                        let particle = document.createElement("div");
+                        particle.classList.add("particle");
+                        particle.style.top = Math.random() * 100 + "vh";
+                        particle.style.left = Math.random() * 100 + "vw";
+                        particle.style.animationDuration = (5 + Math.random() * 5) + "s";
+                        particleContainer.appendChild(particle);
+                    }
+                });
+            </script>
+        </div>
+    </div>
     
-    <form method="POST">
-        <label for="topic">Enter a Topic:</label>
-        <input type="text" id="topic" name="topic" required>
+    <div class="container">
+        <h1>🚀 AI-Powered Caption & Hashtag Generator</h1>
         
-        <label for="style">Choose Caption Style:</label>
-        <select id="style" name="style">
-            <option value="casual">Casual</option>
-            <option value="funny">Funny</option>
-            <option value="motivational">Motivational</option>
-            <option value="aesthetic">Aesthetic</option>
-            <option value="short">Short & Catchy</option>
-        </select>
-        
-        <button type="submit">✨ Generate Caption</button>
-    </form>
-
-    {% if error %}
-    <p class="error">{{ error }}</p>
-    {% endif %}
-
+        <div class="form-box">
+            <form method="POST">
+                <label for="topic">Enter a Topic:</label>
+                <input type="text" id="topic" name="topic" required>
+                
+                <label for="style">Choose Caption Style:</label>
+                <select id="style" name="style">
+                    <option value="casual">Casual</option>
+                    <option value="funny">Funny</option>
+                    <option value="motivational">Motivational</option>
+                    <option value="aesthetic">Aesthetic</option>
+                    <option value="short">Short & Catchy</option>
+                </select>
+                
+                <button type="submit">✨ Generate Caption & Hashtags</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
